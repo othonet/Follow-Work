@@ -1,8 +1,8 @@
-<div class="container mx-auto px-4 py-8 max-w-2xl">
-    <div class="mb-8">
-        <a href="/admin/projects/{{project.id}}/stages" class="text-blue-400 hover:text-blue-300 mb-4 inline-block">← Voltar</a>
-        <h1 class="text-4xl font-bold mb-2">{{#if stage}}Editar{{else}}Nova{{/if}} Etapa</h1>
-        <p class="text-gray-400">Projeto: {{project.name}}</p>
+<div class="container mx-auto px-4 py-4 sm:py-8 max-w-2xl">
+    <div class="mb-6 sm:mb-8">
+        <a href="/admin/projects/{{project.id}}/stages" class="text-blue-400 hover:text-blue-300 mb-4 inline-block text-sm sm:text-base">← Voltar</a>
+        <h1 class="text-2xl sm:text-4xl font-bold mb-2">{{#if stage}}Editar{{else}}Nova{{/if}} Etapa</h1>
+        <p class="text-gray-400 text-sm sm:text-base">Projeto: {{project.name}}</p>
     </div>
 
     {{#if error}}

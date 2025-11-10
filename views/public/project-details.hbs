@@ -1,34 +1,34 @@
-<div class="container mx-auto px-4 py-8">
-    <div class="mb-8">
-        <div class="flex justify-between items-start mb-4">
-            <a href="/" class="text-blue-400 hover:text-blue-300 inline-block">← Voltar para projetos</a>
-            <a href="/logout" class="bg-red-600 hover:bg-red-700 px-4 py-2 rounded-lg transition-colors">
+<div class="container mx-auto px-4 py-4 sm:py-8">
+    <div class="mb-6 sm:mb-8">
+        <div class="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-3 mb-4">
+            <a href="/" class="text-blue-400 hover:text-blue-300 inline-block text-sm sm:text-base">← Voltar para projetos</a>
+            <a href="/logout" class="bg-red-600 hover:bg-red-700 px-4 py-2 rounded-lg transition-colors text-center sm:w-auto">
                 Sair
             </a>
         </div>
-        <h1 class="text-4xl font-bold mb-2">{{project.name}}</h1>
+        <h1 class="text-2xl sm:text-4xl font-bold mb-2">{{project.name}}</h1>
         {{#if project.description}}
-            <p class="text-gray-400">{{project.description}}</p>
+            <p class="text-gray-400 text-sm sm:text-base">{{project.description}}</p>
         {{/if}}
     </div>
 
-    <div class="mb-6 bg-gray-800 rounded-lg p-6 border border-gray-700">
-        <div class="flex justify-between items-center mb-2">
-            <h2 class="text-xl font-semibold">Progresso Geral do Projeto</h2>
-            <span class="text-2xl font-bold">{{project.progress}}%</span>
+    <div class="mb-6 bg-gray-800 rounded-lg p-4 sm:p-6 border border-gray-700">
+        <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 mb-2">
+            <h2 class="text-lg sm:text-xl font-semibold">Progresso Geral do Projeto</h2>
+            <span class="text-xl sm:text-2xl font-bold">{{project.progress}}%</span>
         </div>
-        <div class="w-full bg-gray-700 rounded-full h-4">
-            <div class="bg-blue-600 h-4 rounded-full transition-all duration-300" style="width: {{project.progress}}%"></div>
+        <div class="w-full bg-gray-700 rounded-full h-3 sm:h-4">
+            <div class="bg-blue-600 h-3 sm:h-4 rounded-full transition-all duration-300" style="width: {{project.progress}}%"></div>
         </div>
     </div>
 
     {{#if project.stages}}
         <div class="space-y-6">
             {{#each project.stages}}
-                <div class="bg-gray-800 rounded-lg p-6 border border-gray-700">
-                    <div class="flex justify-between items-start mb-4">
-                        <div>
-                            <h3 class="text-2xl font-semibold mb-2">{{name}}</h3>
+                <div class="bg-gray-800 rounded-lg p-4 sm:p-6 border border-gray-700">
+                    <div class="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4 mb-4">
+                        <div class="flex-1">
+                            <h3 class="text-xl sm:text-2xl font-semibold mb-2">{{name}}</h3>
                             {{#if description}}
                                 <p class="text-gray-400 text-sm mb-2">{{description}}</p>
                             {{/if}}
@@ -38,9 +38,9 @@
                                 </span>
                             </p>
                         </div>
-                        <div class="text-right">
+                        <div class="text-left sm:text-right">
                             <div class="text-sm text-gray-400 mb-1">Progresso</div>
-                            <div class="text-2xl font-bold">{{progress}}%</div>
+                            <div class="text-xl sm:text-2xl font-bold">{{progress}}%</div>
                         </div>
                     </div>
 

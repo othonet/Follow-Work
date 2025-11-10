@@ -1,8 +1,8 @@
-<div class="container mx-auto px-4 py-8">
-    <div class="mb-8">
-        <a href="/admin/projects" class="text-blue-400 hover:text-blue-300 mb-4 inline-block">← Voltar para projetos</a>
-        <h1 class="text-4xl font-bold mb-2">{{project.name}}</h1>
-        <p class="text-gray-400">Gerenciar Etapas</p>
+<div class="container mx-auto px-4 py-4 sm:py-8">
+    <div class="mb-6 sm:mb-8">
+        <a href="/admin/projects" class="text-blue-400 hover:text-blue-300 mb-4 inline-block text-sm sm:text-base">← Voltar para projetos</a>
+        <h1 class="text-2xl sm:text-4xl font-bold mb-2">{{project.name}}</h1>
+        <p class="text-gray-400 text-sm sm:text-base">Gerenciar Etapas</p>
     </div>
 
     <div class="mb-6">
@@ -16,9 +16,9 @@
         <div class="space-y-4">
             {{#each project.stages}}
                 <div class="bg-gray-800 rounded-lg p-6 border border-gray-700">
-                    <div class="flex justify-between items-start">
+                    <div class="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4">
                         <div class="flex-1">
-                            <h3 class="text-2xl font-semibold mb-2">{{name}}</h3>
+                            <h3 class="text-xl sm:text-2xl font-semibold mb-2">{{name}}</h3>
                             {{#if description}}
                                 <p class="text-gray-400 text-sm mb-2">{{description}}</p>
                             {{/if}}
@@ -29,19 +29,19 @@
                                 {{activities.length}} {{#if (eq activities.length 1)}}atividade{{else}}atividades{{/if}}
                             </p>
                         </div>
-                        <div class="flex gap-2">
+                        <div class="flex flex-col sm:flex-row gap-2">
                             <a href="/admin/projects/{{../project.id}}/stages/{{id}}/activities" 
-                               class="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-lg transition-colors text-sm">
+                               class="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-lg transition-colors text-sm text-center">
                                 Atividades
                             </a>
                             <a href="/admin/projects/{{../project.id}}/stages/{{id}}/edit" 
-                               class="bg-gray-700 hover:bg-gray-600 px-4 py-2 rounded-lg transition-colors text-sm">
+                               class="bg-gray-700 hover:bg-gray-600 px-4 py-2 rounded-lg transition-colors text-sm text-center">
                                 Editar
                             </a>
-                            <form action="/admin/projects/{{../project.id}}/stages/{{id}}/delete" method="POST" class="inline">
+                            <form action="/admin/projects/{{../project.id}}/stages/{{id}}/delete" method="POST" class="w-full sm:w-auto">
                                 <button type="submit" 
                                         onclick="return confirm('Tem certeza que deseja deletar esta etapa?')"
-                                        class="bg-red-600 hover:bg-red-700 px-4 py-2 rounded-lg transition-colors text-sm">
+                                        class="w-full bg-red-600 hover:bg-red-700 px-4 py-2 rounded-lg transition-colors text-sm">
                                     Deletar
                                 </button>
                             </form>

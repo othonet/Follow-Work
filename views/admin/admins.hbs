@@ -1,70 +1,110 @@
 <div class="container mx-auto px-4 py-8">
-    <div class="flex justify-between items-center mb-8">
-        <div>
-            <h1 class="text-4xl font-bold mb-2">Administradores</h1>
-            <p class="text-gray-400">Gerencie os administradores do sistema</p>
-        </div>
-        <div class="flex gap-4">
-            <a href="/admin/projects" class="bg-gray-700 hover:bg-gray-600 px-4 py-2 rounded-lg transition-colors">
-                Projetos
-            </a>
-            <a href="/admin/clients" class="bg-gray-700 hover:bg-gray-600 px-4 py-2 rounded-lg transition-colors">
-                Clientes
-            </a>
-            <a href="/admin/admins/new" class="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-lg transition-colors">
+    <div class="mb-8">
+        <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-4">
+            <div>
+                <h1 class="text-3xl sm:text-4xl font-bold mb-2">Administradores</h1>
+                <p class="text-gray-400 text-sm sm:text-base">Gerencie os administradores do sistema</p>
+            </div>
+            <a href="/admin/admins/new" class="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-lg transition-colors text-center sm:w-auto">
                 + Novo Admin
             </a>
-            <a href="/admin/logout" class="bg-red-600 hover:bg-red-700 px-4 py-2 rounded-lg transition-colors">
+        </div>
+        <div class="flex flex-wrap gap-2">
+            <a href="/admin/projects" class="bg-gray-700 hover:bg-gray-600 px-3 py-2 rounded-lg transition-colors text-sm">
+                Projetos
+            </a>
+            <a href="/admin/clients" class="bg-gray-700 hover:bg-gray-600 px-3 py-2 rounded-lg transition-colors text-sm">
+                Clientes
+            </a>
+            <a href="/admin/logout" class="bg-red-600 hover:bg-red-700 px-3 py-2 rounded-lg transition-colors text-sm">
                 Sair
             </a>
         </div>
     </div>
 
     {{#if admins}}
-        <div class="bg-gray-800 rounded-lg border border-gray-700 overflow-hidden">
-            <table class="w-full">
-                <thead class="bg-gray-700">
-                    <tr>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Nome</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Email</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Data de Cadastro</th>
-                        <th class="px-6 py-3 text-right text-xs font-medium text-gray-300 uppercase tracking-wider">Ações</th>
-                    </tr>
-                </thead>
-                <tbody class="divide-y divide-gray-700">
-                    {{#each admins}}
-                        <tr class="hover:bg-gray-750">
-                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-white">
-                                {{name}}
-                                {{#if (eq id ../currentUserId)}}
-                                    <span class="ml-2 text-xs text-blue-400">(Você)</span>
-                                {{/if}}
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">{{email}}</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-400">{{formatDate createdAt}}</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                <div class="flex justify-end gap-2">
-                                    <a href="/admin/admins/{{id}}/edit" 
-                                       class="bg-blue-600 hover:bg-blue-700 px-3 py-1 rounded transition-colors text-sm">
-                                        Editar
-                                    </a>
-                                    {{#unless (eq id ../currentUserId)}}
-                                        <form action="/admin/admins/{{id}}/delete" method="POST" class="inline">
-                                            <button type="submit" 
-                                                    onclick="return confirm('Tem certeza que deseja deletar este administrador?')"
-                                                    class="bg-red-600 hover:bg-red-700 px-3 py-1 rounded transition-colors text-sm">
-                                                Deletar
-                                            </button>
-                                        </form>
-                                    {{else}}
-                                        <span class="text-gray-500 text-xs px-3 py-1">Não pode deletar</span>
-                                    {{/unless}}
-                                </div>
-                            </td>
+        <!-- Desktop Table View -->
+        <div class="hidden md:block bg-gray-800 rounded-lg border border-gray-700 overflow-hidden">
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead class="bg-gray-700">
+                        <tr>
+                            <th class="px-4 lg:px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Nome</th>
+                            <th class="px-4 lg:px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Email</th>
+                            <th class="px-4 lg:px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Data</th>
+                            <th class="px-4 lg:px-6 py-3 text-right text-xs font-medium text-gray-300 uppercase tracking-wider">Ações</th>
                         </tr>
-                    {{/each}}
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody class="divide-y divide-gray-700">
+                        {{#each admins}}
+                            <tr class="hover:bg-gray-750">
+                                <td class="px-4 lg:px-6 py-4 text-sm font-medium text-white">
+                                    {{name}}
+                                    {{#if (eq id ../currentUserId)}}
+                                        <span class="ml-2 text-xs text-blue-400">(Você)</span>
+                                    {{/if}}
+                                </td>
+                                <td class="px-4 lg:px-6 py-4 text-sm text-gray-300">{{email}}</td>
+                                <td class="px-4 lg:px-6 py-4 text-sm text-gray-400">{{formatDate createdAt}}</td>
+                                <td class="px-4 lg:px-6 py-4 text-right text-sm font-medium">
+                                    <div class="flex justify-end gap-2">
+                                        <a href="/admin/admins/{{id}}/edit" 
+                                           class="bg-blue-600 hover:bg-blue-700 px-3 py-1 rounded transition-colors text-sm">
+                                            Editar
+                                        </a>
+                                        {{#unless (eq id ../currentUserId)}}
+                                            <form action="/admin/admins/{{id}}/delete" method="POST" class="inline">
+                                                <button type="submit" 
+                                                        onclick="return confirm('Tem certeza que deseja deletar este administrador?')"
+                                                        class="bg-red-600 hover:bg-red-700 px-3 py-1 rounded transition-colors text-sm">
+                                                    Deletar
+                                                </button>
+                                            </form>
+                                        {{else}}
+                                            <span class="text-gray-500 text-xs px-3 py-1">Não pode deletar</span>
+                                        {{/unless}}
+                                    </div>
+                                </td>
+                            </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Mobile Card View -->
+        <div class="md:hidden space-y-4">
+            {{#each admins}}
+                <div class="bg-gray-800 rounded-lg p-4 border border-gray-700">
+                    <div class="mb-3">
+                        <h3 class="text-lg font-semibold text-white mb-1">
+                            {{name}}
+                            {{#if (eq id ../currentUserId)}}
+                                <span class="ml-2 text-xs text-blue-400">(Você)</span>
+                            {{/if}}
+                        </h3>
+                        <p class="text-sm text-gray-300">{{email}}</p>
+                        <p class="text-xs text-gray-400 mt-1">Cadastrado em {{formatDate createdAt}}</p>
+                    </div>
+                    <div class="flex gap-2 mt-4">
+                        <a href="/admin/admins/{{id}}/edit" 
+                           class="flex-1 bg-blue-600 hover:bg-blue-700 text-center px-3 py-2 rounded transition-colors text-sm">
+                            Editar
+                        </a>
+                        {{#unless (eq id ../currentUserId)}}
+                            <form action="/admin/admins/{{id}}/delete" method="POST" class="flex-1">
+                                <button type="submit" 
+                                        onclick="return confirm('Tem certeza que deseja deletar este administrador?')"
+                                        class="w-full bg-red-600 hover:bg-red-700 px-3 py-2 rounded transition-colors text-sm">
+                                    Deletar
+                                </button>
+                            </form>
+                        {{else}}
+                            <span class="flex-1 text-gray-500 text-xs px-3 py-2 text-center flex items-center justify-center">Não pode deletar</span>
+                        {{/unless}}
+                    </div>
+                </div>
+            {{/each}}
         </div>
     {{else}}
         <div class="text-center py-12 bg-gray-800 rounded-lg border border-gray-700">

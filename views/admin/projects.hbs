@@ -1,23 +1,25 @@
 <div class="container mx-auto px-4 py-8">
-    <div class="flex justify-between items-center mb-8">
-        <div>
-            <h1 class="text-4xl font-bold mb-2">Projetos</h1>
-            <p class="text-gray-400">Gerencie seus projetos</p>
-        </div>
-        <div class="flex gap-4">
-            <a href="/admin/clients" class="bg-gray-700 hover:bg-gray-600 px-4 py-2 rounded-lg transition-colors">
-                Clientes
-            </a>
-            <a href="/admin/admins" class="bg-gray-700 hover:bg-gray-600 px-4 py-2 rounded-lg transition-colors">
-                Admins
-            </a>
-            <a href="/" class="bg-gray-700 hover:bg-gray-600 px-4 py-2 rounded-lg transition-colors" target="_blank">
-                Ver Público
-            </a>
-            <a href="/admin/projects/new" class="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-lg transition-colors">
+    <div class="mb-8">
+        <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-4">
+            <div>
+                <h1 class="text-3xl sm:text-4xl font-bold mb-2">Projetos</h1>
+                <p class="text-gray-400 text-sm sm:text-base">Gerencie seus projetos</p>
+            </div>
+            <a href="/admin/projects/new" class="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-lg transition-colors text-center sm:w-auto">
                 + Novo Projeto
             </a>
-            <a href="/admin/logout" class="bg-red-600 hover:bg-red-700 px-4 py-2 rounded-lg transition-colors">
+        </div>
+        <div class="flex flex-wrap gap-2">
+            <a href="/admin/clients" class="bg-gray-700 hover:bg-gray-600 px-3 py-2 rounded-lg transition-colors text-sm">
+                Clientes
+            </a>
+            <a href="/admin/admins" class="bg-gray-700 hover:bg-gray-600 px-3 py-2 rounded-lg transition-colors text-sm">
+                Admins
+            </a>
+            <a href="/" class="bg-gray-700 hover:bg-gray-600 px-3 py-2 rounded-lg transition-colors text-sm" target="_blank">
+                Ver Público
+            </a>
+            <a href="/admin/logout" class="bg-red-600 hover:bg-red-700 px-3 py-2 rounded-lg transition-colors text-sm">
                 Sair
             </a>
         </div>
@@ -36,19 +38,19 @@
                         <p class="text-sm text-gray-400 mb-2">{{stages.length}} {{#if (eq stages.length 1)}}etapa{{else}}etapas{{/if}}</p>
                     </div>
 
-                    <div class="flex gap-2">
+                    <div class="flex flex-col sm:flex-row gap-2 mt-4">
                         <a href="/admin/projects/{{id}}/stages" 
                            class="flex-1 bg-blue-600 hover:bg-blue-700 text-center px-4 py-2 rounded-lg transition-colors text-sm">
                             Gerenciar
                         </a>
                         <a href="/admin/projects/{{id}}/edit" 
-                           class="bg-gray-700 hover:bg-gray-600 px-4 py-2 rounded-lg transition-colors text-sm">
+                           class="bg-gray-700 hover:bg-gray-600 px-3 py-2 rounded-lg transition-colors text-sm text-center">
                             Editar
                         </a>
-                        <form action="/admin/projects/{{id}}/delete" method="POST" class="inline">
+                        <form action="/admin/projects/{{id}}/delete" method="POST" class="flex-1 sm:flex-initial">
                             <button type="submit" 
                                     onclick="return confirm('Tem certeza que deseja deletar este projeto?')"
-                                    class="bg-red-600 hover:bg-red-700 px-4 py-2 rounded-lg transition-colors text-sm">
+                                    class="w-full sm:w-auto bg-red-600 hover:bg-red-700 px-3 py-2 rounded-lg transition-colors text-sm">
                                 Deletar
                             </button>
                         </form>
