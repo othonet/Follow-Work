@@ -29,7 +29,13 @@ const {
   createClient,
   editClientPage,
   updateClient,
-  deleteClient
+  deleteClient,
+  getAdmins,
+  createAdminPage,
+  createAdmin,
+  editAdminPage,
+  updateAdmin,
+  deleteAdmin
 } = require('../controllers/adminController');
 
 // Auth routes (must be before authMiddleware)
@@ -74,6 +80,14 @@ router.post('/clients', createClient);
 router.get('/clients/:id/edit', editClientPage);
 router.post('/clients/:id', updateClient);
 router.post('/clients/:id/delete', deleteClient);
+
+// Admins Management
+router.get('/admins', getAdmins);
+router.get('/admins/new', createAdminPage);
+router.post('/admins', createAdmin);
+router.get('/admins/:id/edit', editAdminPage);
+router.post('/admins/:id', updateAdmin);
+router.post('/admins/:id/delete', deleteAdmin);
 
 module.exports = router;
 

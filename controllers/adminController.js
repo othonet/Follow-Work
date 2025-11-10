@@ -4,7 +4,8 @@ const jwt = require('jsonwebtoken');
 
 // Auth
 const loginPage = (req, res) => {
-  res.render('admin/login');
+  const message = req.query.message;
+  res.render('admin/login', { message });
 };
 
 const login = async (req, res) => {
@@ -712,6 +713,189 @@ const deleteClient = async (req, res) => {
   }
 };
 
+// Admins Management
+const getAdmins = async (req, res) => {
+  try {
+    const admins = await prisma.user.findMany({
+      where: { role: 'admin' },
+      orderBy: {
+        createdAt: 'desc'
+      },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        createdAt: true,
+        updatedAt: true
+      }
+    });
+
+    res.render('admin/admins', { admins, currentUserId: req.user.id });
+  } catch (error) {
+    console.error('Erro ao buscar administradores:', error);
+    res.status(500).render('error', { message: 'Erro ao carregar administradores' });
+  }
+};
+
+const createAdminPage = (req, res) => {
+  res.render('admin/admin-form', { admin: null });
+};
+
+const createAdmin = async (req, res) => {
+  try {
+    const { name, email, password } = req.body;
+
+    // Verificar se o email já existe
+    const existingUser = await prisma.user.findUnique({
+      where: { email }
+    });
+
+    if (existingUser) {
+      return res.render('admin/admin-form', {
+        admin: null,
+        error: 'Email já cadastrado'
+      });
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    await prisma.user.create({
+      data: {
+        name,
+        email,
+        password: hashedPassword,
+        role: 'admin'
+      }
+    });
+
+    res.redirect('/admin/admins');
+  } catch (error) {
+    console.error('Erro ao criar administrador:', error);
+    res.render('admin/admin-form', {
+      admin: null,
+      error: 'Erro ao criar administrador'
+    });
+  }
+};
+
+const editAdminPage = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const admin = await prisma.user.findUnique({
+      where: { id: parseInt(id), role: 'admin' },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        role: true
+      }
+    });
+
+    if (!admin) {
+      return res.status(404).render('error', { message: 'Administrador não encontrado' });
+    }
+
+    res.render('admin/admin-form', { admin, currentUserId: req.user.id });
+  } catch (error) {
+    console.error('Erro ao buscar administrador:', error);
+    res.status(500).render('error', { message: 'Erro ao carregar administrador' });
+  }
+};
+
+const updateAdmin = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { name, email, password } = req.body;
+    const currentUserId = req.user.id;
+    const isUpdatingSelf = parseInt(id) === currentUserId;
+
+    // Verificar se o email já existe em outro usuário
+    const existingUser = await prisma.user.findFirst({
+      where: {
+        email,
+        NOT: { id: parseInt(id) }
+      }
+    });
+
+    if (existingUser) {
+      const admin = await prisma.user.findUnique({
+        where: { id: parseInt(id) },
+        select: { id: true, name: true, email: true }
+      });
+      return res.render('admin/admin-form', {
+        admin,
+        currentUserId,
+        error: 'Email já cadastrado para outro usuário'
+      });
+    }
+
+    const updateData = {
+      name,
+      email
+    };
+
+    if (password && password.trim() !== '') {
+      updateData.password = await bcrypt.hash(password, 10);
+    }
+
+    await prisma.user.update({
+      where: { id: parseInt(id) },
+      data: updateData
+    });
+
+    // Se o usuário atualizou a si mesmo, fazer logout
+    if (isUpdatingSelf) {
+      res.clearCookie('token');
+      return res.redirect('/admin/login?message=Seus dados foram atualizados. Por favor, faça login novamente.');
+    }
+
+    res.redirect('/admin/admins');
+  } catch (error) {
+    console.error('Erro ao atualizar administrador:', error);
+    const admin = await prisma.user.findUnique({
+      where: { id: parseInt(req.params.id) },
+      select: { id: true, name: true, email: true }
+    });
+    res.render('admin/admin-form', {
+      admin,
+      currentUserId: req.user.id,
+      error: 'Erro ao atualizar administrador'
+    });
+  }
+};
+
+const deleteAdmin = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const currentUserId = req.user.id;
+
+    // Verificar se está tentando deletar a si mesmo
+    if (parseInt(id) === currentUserId) {
+      return res.status(403).render('error', { 
+        message: 'Você não pode deletar sua própria conta enquanto estiver logado.' 
+      });
+    }
+
+    // Verificar se é um admin antes de deletar
+    const admin = await prisma.user.findUnique({
+      where: { id: parseInt(id) }
+    });
+
+    if (!admin || admin.role !== 'admin') {
+      return res.status(404).json({ error: 'Administrador não encontrado' });
+    }
+
+    await prisma.user.delete({
+      where: { id: parseInt(id) }
+    });
+
+    res.redirect('/admin/admins');
+  } catch (error) {
+    console.error('Erro ao deletar administrador:', error);
+    res.status(500).json({ error: 'Erro ao deletar administrador' });
+  }
+};
+
 module.exports = {
   loginPage,
   login,
@@ -740,6 +924,12 @@ module.exports = {
   createClient,
   editClientPage,
   updateClient,
-  deleteClient
+  deleteClient,
+  getAdmins,
+  createAdminPage,
+  createAdmin,
+  editAdminPage,
+  updateAdmin,
+  deleteAdmin
 };
 
