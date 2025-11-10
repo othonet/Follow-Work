@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - main
+      - master
+  workflow_dispatch:
 
 jobs:
   deploy:
@@ -11,10 +13,10 @@ jobs:
     
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
-
+        uses: actions/checkout@v4
+      
       - name: Deploy to VPS
-        uses: appleboy/ssh-action@master
+        uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.VPS_HOST }}
           username: ${{ secrets.VPS_USER }}
@@ -22,9 +24,28 @@ jobs:
           port: ${{ secrets.VPS_PORT || 22 }}
           script: |
             cd ~/Follow-Work
-            git pull origin main
-            npm install
+            
+            # Atualizar código
+            echo "🔄 Atualizando código..."
+            git fetch origin
+            git reset --hard origin/main || git reset --hard origin/master
+            
+            # Instalar/atualizar dependências
+            echo "📦 Instalando dependências..."
+            npm ci
+            
+            # Gerar Prisma Client
+            echo "🔧 Gerando Prisma Client..."
             npm run prisma:generate
-            npm run prisma:migrate
-            pm2 restart follow-work || pm2 start server.js --name follow-work
-
+            
+            # Aplicar migrations (se houver novas)
+            echo "🗄️ Aplicando migrations..."
+            npm run prisma:migrate deploy || echo "Nenhuma migration pendente"
+            
+            # Reiniciar aplicação no PM2
+            echo "🔄 Reiniciando aplicação..."
+            pm2 restart follow-work --update-env
+            
+            # Verificar status
+            echo "✅ Deploy concluído!"
+            pm2 status follow-work
