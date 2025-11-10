@@ -1,0 +1,18 @@
+# Configuração do Banco de Dados MySQL
+# Copie este arquivo para .env e ajuste as credenciais
+
+DATABASE_URL="mysql://usuario:senha@localhost:3306/follow_work?schema=public"
+JWT_SECRET="sua_chave_secreta_jwt_aqui_altere_em_producao"
+PORT=3000
+
+# Exemplo de DATABASE_URL:
+# mysql://root:senha@localhost:3306/follow_work?schema=public
+# mysql://usuario:senha@servidor:porta/nome_do_banco?schema=public
+
+# Onde:
+# - usuario: seu usuário do MySQL
+# - senha: sua senha do MySQL
+# - localhost: endereço do servidor MySQL (pode ser localhost ou IP)
+# - 3306: porta do MySQL (padrão é 3306)
+# - follow_work: nome do banco de dados (será criado automaticamente)
+

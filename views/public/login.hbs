@@ -1,0 +1,59 @@
+<div class="min-h-screen flex">
+    <!-- Painel Esquerdo - Imagem -->
+    <div class="hidden lg:flex lg:w-1/2 relative bg-gradient-to-br from-purple-900 via-purple-800 to-indigo-900">
+        <div class="absolute inset-0 bg-cover bg-center opacity-80" 
+             style="background-image: url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80');">
+        </div>
+        <div class="relative z-10 flex flex-col justify-between w-full p-12">
+            <div class="flex justify-between items-start">
+                <div class="text-white text-2xl font-bold tracking-wider">K.A Solution</div>
+            </div>
+            <div class="text-center text-white">
+                <p class="text-xl font-light">Acompanhando Desenvolvimento,</p>
+                <p class="text-xl font-light">Criando Resultados</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Painel Direito - Formulário -->
+    <div class="w-full lg:w-1/2 flex items-center justify-center bg-gray-900 px-6 py-12">
+        <div class="w-full max-w-md">
+            <h1 class="text-4xl font-bold text-white mb-2">Acesso ao Sistema</h1>
+            <p class="text-gray-400 mb-8">Entre com suas credenciais para continuar</p>
+            
+            {{#if error}}
+                <div class="bg-red-900/50 border border-red-700 text-red-200 px-4 py-3 rounded-lg mb-6">
+                    {{error}}
+                </div>
+            {{/if}}
+
+            <form action="/login" method="POST" class="space-y-6">
+                <div>
+                    <label for="email" class="block text-sm font-medium text-gray-300 mb-2">Email</label>
+                    <input type="email" 
+                           id="email" 
+                           name="email" 
+                           required
+                           placeholder="seu@email.com"
+                           class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent text-white placeholder-gray-500 transition-all">
+                </div>
+
+                <div>
+                    <label for="password" class="block text-sm font-medium text-gray-300 mb-2">Senha</label>
+                    <input type="password" 
+                           id="password" 
+                           name="password" 
+                           required
+                           placeholder="••••••••"
+                           class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent text-white placeholder-gray-500 transition-all">
+                </div>
+
+                <button type="submit" 
+                        class="w-full bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white font-semibold py-3 px-4 rounded-lg transition-all duration-200 shadow-lg shadow-purple-500/50 hover:shadow-purple-500/70">
+                    Entrar
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,96 @@
+<div class="container mx-auto px-4 py-8">
+    <div class="mb-8">
+        <div class="flex justify-between items-start mb-4">
+            <a href="/" class="text-blue-400 hover:text-blue-300 inline-block">← Voltar para projetos</a>
+            <a href="/logout" class="bg-red-600 hover:bg-red-700 px-4 py-2 rounded-lg transition-colors">
+                Sair
+            </a>
+        </div>
+        <h1 class="text-4xl font-bold mb-2">{{project.name}}</h1>
+        {{#if project.description}}
+            <p class="text-gray-400">{{project.description}}</p>
+        {{/if}}
+    </div>
+
+    <div class="mb-6 bg-gray-800 rounded-lg p-6 border border-gray-700">
+        <div class="flex justify-between items-center mb-2">
+            <h2 class="text-xl font-semibold">Progresso Geral do Projeto</h2>
+            <span class="text-2xl font-bold">{{project.progress}}%</span>
+        </div>
+        <div class="w-full bg-gray-700 rounded-full h-4">
+            <div class="bg-blue-600 h-4 rounded-full transition-all duration-300" style="width: {{project.progress}}%"></div>
+        </div>
+    </div>
+
+    {{#if project.stages}}
+        <div class="space-y-6">
+            {{#each project.stages}}
+                <div class="bg-gray-800 rounded-lg p-6 border border-gray-700">
+                    <div class="flex justify-between items-start mb-4">
+                        <div>
+                            <h3 class="text-2xl font-semibold mb-2">{{name}}</h3>
+                            {{#if description}}
+                                <p class="text-gray-400 text-sm mb-2">{{description}}</p>
+                            {{/if}}
+                            <p class="text-sm text-gray-500">
+                                Prazo: <span class="font-semibold {{#if (isPast deadline)}}text-red-400{{else}}text-gray-400{{/if}}">
+                                    {{formatDate deadline}}
+                                </span>
+                            </p>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-sm text-gray-400 mb-1">Progresso</div>
+                            <div class="text-2xl font-bold">{{progress}}%</div>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <div class="w-full bg-gray-700 rounded-full h-3">
+                            {{#if (gte progress 100)}}
+                                <div class="bg-green-600 h-3 rounded-full transition-all duration-300" style="width: {{progress}}%"></div>
+                            {{else if (gte progress 50)}}
+                                <div class="bg-blue-600 h-3 rounded-full transition-all duration-300" style="width: {{progress}}%"></div>
+                            {{else}}
+                                <div class="bg-yellow-600 h-3 rounded-full transition-all duration-300" style="width: {{progress}}%"></div>
+                            {{/if}}
+                        </div>
+                        <div class="flex justify-between text-xs text-gray-500 mt-1">
+                            <span>{{completedActivities}} de {{totalActivities}} concluídas</span>
+                        </div>
+                    </div>
+
+                    {{#if activities}}
+                        <div class="mt-6 space-y-3">
+                            <h4 class="text-lg font-semibold mb-3">Atividades:</h4>
+                            {{#each activities}}
+                                <div class="flex items-start bg-gray-700 rounded-lg p-4 border border-gray-600">
+                                    <div class="flex-shrink-0 mr-3 mt-1">
+                                        <input type="checkbox" 
+                                               {{#if completed}}checked{{/if}} 
+                                               disabled
+                                               class="w-5 h-5 rounded border-gray-600 bg-gray-800 text-blue-600 focus:ring-blue-500 focus:ring-2 cursor-not-allowed">
+                                    </div>
+                                    <div class="flex-1">
+                                        <label class="block text-sm font-medium {{#if completed}}line-through text-gray-500{{else}}text-gray-200{{/if}}">
+                                            {{name}}
+                                        </label>
+                                        {{#if description}}
+                                            <p class="text-xs text-gray-500 mt-1">{{description}}</p>
+                                        {{/if}}
+                                    </div>
+                                </div>
+                            {{/each}}
+                        </div>
+                    {{else}}
+                        <p class="text-gray-500 text-sm mt-4">Nenhuma atividade cadastrada nesta etapa.</p>
+                    {{/if}}
+                </div>
+            {{/each}}
+        </div>
+    {{else}}
+        <div class="text-center py-12 bg-gray-800 rounded-lg border border-gray-700">
+            <p class="text-gray-400 text-lg">Nenhuma etapa cadastrada para este projeto.</p>
+        </div>
+    {{/if}}
+</div>
+

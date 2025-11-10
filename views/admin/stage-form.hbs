@@ -1,0 +1,55 @@
+<div class="container mx-auto px-4 py-8 max-w-2xl">
+    <div class="mb-8">
+        <a href="/admin/projects/{{project.id}}/stages" class="text-blue-400 hover:text-blue-300 mb-4 inline-block">← Voltar</a>
+        <h1 class="text-4xl font-bold mb-2">{{#if stage}}Editar{{else}}Nova{{/if}} Etapa</h1>
+        <p class="text-gray-400">Projeto: {{project.name}}</p>
+    </div>
+
+    {{#if error}}
+        <div class="bg-red-900 border border-red-700 text-red-200 px-4 py-3 rounded mb-4">
+            {{error}}
+        </div>
+    {{/if}}
+
+    <form action="/admin/projects/{{project.id}}/stages{{#if stage}}/{{stage.id}}{{/if}}" method="POST" class="bg-gray-800 rounded-lg p-6 border border-gray-700">
+        <div class="mb-4">
+            <label for="name" class="block text-sm font-medium mb-2">Nome da Etapa *</label>
+            <input type="text" 
+                   id="name" 
+                   name="name" 
+                   value="{{stage.name}}"
+                   required
+                   class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-white">
+        </div>
+
+        <div class="mb-4">
+            <label for="description" class="block text-sm font-medium mb-2">Descrição</label>
+            <textarea id="description" 
+                      name="description" 
+                      rows="4"
+                      class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-white">{{stage.description}}</textarea>
+        </div>
+
+        <div class="mb-6">
+            <label for="deadline" class="block text-sm font-medium mb-2">Prazo *</label>
+            <input type="datetime-local" 
+                   id="deadline" 
+                   name="deadline" 
+                   value="{{#if stage}}{{formatDateTime stage.deadline}}{{/if}}"
+                   required
+                   class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-white">
+        </div>
+
+        <div class="flex gap-4">
+            <button type="submit" 
+                    class="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors">
+                {{#if stage}}Atualizar{{else}}Criar{{/if}}
+            </button>
+            <a href="/admin/projects/{{project.id}}/stages" 
+               class="bg-gray-700 hover:bg-gray-600 text-white font-semibold py-2 px-4 rounded-lg transition-colors">
+                Cancelar
+            </a>
+        </div>
+    </form>
+</div>
+

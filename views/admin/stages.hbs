@@ -1,0 +1,63 @@
+<div class="container mx-auto px-4 py-8">
+    <div class="mb-8">
+        <a href="/admin/projects" class="text-blue-400 hover:text-blue-300 mb-4 inline-block">← Voltar para projetos</a>
+        <h1 class="text-4xl font-bold mb-2">{{project.name}}</h1>
+        <p class="text-gray-400">Gerenciar Etapas</p>
+    </div>
+
+    <div class="mb-6">
+        <a href="/admin/projects/{{project.id}}/stages/new" 
+           class="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-lg transition-colors inline-block">
+            + Nova Etapa
+        </a>
+    </div>
+
+    {{#if project.stages}}
+        <div class="space-y-4">
+            {{#each project.stages}}
+                <div class="bg-gray-800 rounded-lg p-6 border border-gray-700">
+                    <div class="flex justify-between items-start">
+                        <div class="flex-1">
+                            <h3 class="text-2xl font-semibold mb-2">{{name}}</h3>
+                            {{#if description}}
+                                <p class="text-gray-400 text-sm mb-2">{{description}}</p>
+                            {{/if}}
+                            <p class="text-sm text-gray-500">
+                                Prazo: <span class="font-semibold">{{formatDate deadline}}</span>
+                            </p>
+                            <p class="text-sm text-gray-500 mt-1">
+                                {{activities.length}} {{#if (eq activities.length 1)}}atividade{{else}}atividades{{/if}}
+                            </p>
+                        </div>
+                        <div class="flex gap-2">
+                            <a href="/admin/projects/{{../project.id}}/stages/{{id}}/activities" 
+                               class="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-lg transition-colors text-sm">
+                                Atividades
+                            </a>
+                            <a href="/admin/projects/{{../project.id}}/stages/{{id}}/edit" 
+                               class="bg-gray-700 hover:bg-gray-600 px-4 py-2 rounded-lg transition-colors text-sm">
+                                Editar
+                            </a>
+                            <form action="/admin/projects/{{../project.id}}/stages/{{id}}/delete" method="POST" class="inline">
+                                <button type="submit" 
+                                        onclick="return confirm('Tem certeza que deseja deletar esta etapa?')"
+                                        class="bg-red-600 hover:bg-red-700 px-4 py-2 rounded-lg transition-colors text-sm">
+                                    Deletar
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            {{/each}}
+        </div>
+    {{else}}
+        <div class="text-center py-12 bg-gray-800 rounded-lg border border-gray-700">
+            <p class="text-gray-400 text-lg mb-4">Nenhuma etapa cadastrada ainda.</p>
+            <a href="/admin/projects/{{project.id}}/stages/new" 
+               class="inline-block bg-blue-600 hover:bg-blue-700 px-6 py-3 rounded-lg transition-colors">
+                Criar Primeira Etapa
+            </a>
+        </div>
+    {{/if}}
+</div>
+
