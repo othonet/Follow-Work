@@ -59,9 +59,8 @@
                                            class="bg-blue-600 hover:bg-blue-700 px-3 py-1 rounded transition-colors text-sm">
                                             Editar
                                         </a>
-                                        <form action="/admin/clients/{{id}}/delete" method="POST" class="inline">
+                                        <form action="/admin/clients/{{id}}/delete" method="POST" class="inline delete-form">
                                             <button type="submit" 
-                                                    onclick="return confirm('Tem certeza que deseja deletar este cliente?')"
                                                     class="bg-red-600 hover:bg-red-700 px-3 py-1 rounded transition-colors text-sm">
                                                 Deletar
                                             </button>
@@ -99,9 +98,8 @@
                            class="flex-1 bg-blue-600 hover:bg-blue-700 text-center px-3 py-2 rounded transition-colors text-sm">
                             Editar
                         </a>
-                        <form action="/admin/clients/{{id}}/delete" method="POST" class="flex-1">
+                        <form action="/admin/clients/{{id}}/delete" method="POST" class="flex-1 delete-form">
                             <button type="submit" 
-                                    onclick="return confirm('Tem certeza que deseja deletar este cliente?')"
                                     class="w-full bg-red-600 hover:bg-red-700 px-3 py-2 rounded transition-colors text-sm">
                                 Deletar
                             </button>

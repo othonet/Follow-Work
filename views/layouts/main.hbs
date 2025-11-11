@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Follow Work - Acompanhamento de Desenvolvimento</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         tailwind.config = {
             darkMode: 'class',
@@ -13,9 +14,33 @@
             }
         }
     </script>
+    <style>
+        /* SweetAlert2 Dark Theme */
+        .swal2-popup {
+            background-color: #1f2937 !important;
+            color: #f3f4f6 !important;
+        }
+        .swal2-title {
+            color: #f3f4f6 !important;
+        }
+        .swal2-content {
+            color: #d1d5db !important;
+        }
+        .swal2-confirm {
+            background-color: #dc2626 !important;
+        }
+        .swal2-cancel {
+            background-color: #6b7280 !important;
+        }
+        .swal2-icon.swal2-warning {
+            border-color: #f59e0b !important;
+            color: #f59e0b !important;
+        }
+    </style>
 </head>
 <body class="bg-gray-900 text-gray-100 min-h-screen">
     {{{body}}}
+    <script src="/js/notifications.js"></script>
 </body>
 </html>
 

@@ -53,9 +53,8 @@
                                             Editar
                                         </a>
                                         {{#unless (eq id ../currentUserId)}}
-                                            <form action="/admin/admins/{{id}}/delete" method="POST" class="inline">
+                                            <form action="/admin/admins/{{id}}/delete" method="POST" class="inline delete-form">
                                                 <button type="submit" 
-                                                        onclick="return confirm('Tem certeza que deseja deletar este administrador?')"
                                                         class="bg-red-600 hover:bg-red-700 px-3 py-1 rounded transition-colors text-sm">
                                                     Deletar
                                                 </button>
@@ -92,9 +91,8 @@
                             Editar
                         </a>
                         {{#unless (eq id ../currentUserId)}}
-                            <form action="/admin/admins/{{id}}/delete" method="POST" class="flex-1">
+                            <form action="/admin/admins/{{id}}/delete" method="POST" class="flex-1 delete-form">
                                 <button type="submit" 
-                                        onclick="return confirm('Tem certeza que deseja deletar este administrador?')"
                                         class="w-full bg-red-600 hover:bg-red-700 px-3 py-2 rounded transition-colors text-sm">
                                     Deletar
                                 </button>

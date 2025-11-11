@@ -38,9 +38,8 @@
                                class="bg-gray-700 hover:bg-gray-600 px-4 py-2 rounded-lg transition-colors text-sm text-center">
                                 Editar
                             </a>
-                            <form action="/admin/projects/{{../project.id}}/stages/{{id}}/delete" method="POST" class="w-full sm:w-auto">
+                            <form action="/admin/projects/{{../project.id}}/stages/{{id}}/delete" method="POST" class="w-full sm:w-auto delete-form">
                                 <button type="submit" 
-                                        onclick="return confirm('Tem certeza que deseja deletar esta etapa?')"
                                         class="w-full bg-red-600 hover:bg-red-700 px-4 py-2 rounded-lg transition-colors text-sm">
                                     Deletar
                                 </button>

@@ -47,9 +47,8 @@
                            class="bg-gray-700 hover:bg-gray-600 px-3 py-2 rounded-lg transition-colors text-sm text-center">
                             Editar
                         </a>
-                        <form action="/admin/projects/{{id}}/delete" method="POST" class="flex-1 sm:flex-initial">
+                        <form action="/admin/projects/{{id}}/delete" method="POST" class="flex-1 sm:flex-initial delete-form">
                             <button type="submit" 
-                                    onclick="return confirm('Tem certeza que deseja deletar este projeto?')"
                                     class="w-full sm:w-auto bg-red-600 hover:bg-red-700 px-3 py-2 rounded-lg transition-colors text-sm">
                                 Deletar
                             </button>

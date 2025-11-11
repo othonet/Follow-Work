@@ -87,7 +87,7 @@ const createProject = async (req, res) => {
       }
     });
 
-    res.redirect('/admin/projects');
+    res.redirect('/admin/projects?success=Projeto criado com sucesso!');
   } catch (error) {
     console.error('Erro ao criar projeto:', error);
     res.render('admin/project-form', {
@@ -128,7 +128,7 @@ const updateProject = async (req, res) => {
       }
     });
 
-    res.redirect('/admin/projects');
+    res.redirect('/admin/projects?success=Projeto atualizado com sucesso!');
   } catch (error) {
     console.error('Erro ao atualizar projeto:', error);
     res.render('admin/project-form', {
@@ -146,7 +146,7 @@ const deleteProject = async (req, res) => {
       where: { id: parseInt(id) }
     });
 
-    res.redirect('/admin/projects');
+    res.redirect('/admin/projects?success=Projeto deletado com sucesso!');
   } catch (error) {
     console.error('Erro ao deletar projeto:', error);
     res.status(500).json({ error: 'Erro ao deletar projeto' });
@@ -214,7 +214,7 @@ const createStage = async (req, res) => {
       }
     });
 
-    res.redirect(`/admin/projects/${projectId}/stages`);
+    res.redirect(`/admin/projects/${projectId}/stages?success=Etapa criada com sucesso!`);
   } catch (error) {
     console.error('Erro ao criar etapa:', error);
     const project = await prisma.project.findUnique({
@@ -263,7 +263,7 @@ const updateStage = async (req, res) => {
       }
     });
 
-    res.redirect(`/admin/projects/${projectId}/stages`);
+    res.redirect(`/admin/projects/${projectId}/stages?success=Etapa atualizada com sucesso!`);
   } catch (error) {
     console.error('Erro ao atualizar etapa:', error);
     const project = await prisma.project.findUnique({
@@ -285,7 +285,7 @@ const deleteStage = async (req, res) => {
       where: { id: parseInt(id) }
     });
 
-    res.redirect(`/admin/projects/${projectId}/stages`);
+    res.redirect(`/admin/projects/${projectId}/stages?success=Etapa deletada com sucesso!`);
   } catch (error) {
     console.error('Erro ao deletar etapa:', error);
     res.status(500).json({ error: 'Erro ao deletar etapa' });
@@ -353,7 +353,7 @@ const createActivity = async (req, res) => {
       }
     });
 
-    res.redirect(`/admin/projects/${projectId}/stages/${stageId}/activities`);
+    res.redirect(`/admin/projects/${projectId}/stages/${stageId}/activities?success=Atividade criada com sucesso!`);
   } catch (error) {
     console.error('Erro ao criar atividade:', error);
     const stage = await prisma.stage.findUnique({
@@ -407,7 +407,7 @@ const updateActivity = async (req, res) => {
       }
     });
 
-    res.redirect(`/admin/projects/${projectId}/stages/${stageId}/activities`);
+    res.redirect(`/admin/projects/${projectId}/stages/${stageId}/activities?success=Atividade atualizada com sucesso!`);
   } catch (error) {
     console.error('Erro ao atualizar atividade:', error);
     const stage = await prisma.stage.findUnique({
@@ -431,7 +431,7 @@ const deleteActivity = async (req, res) => {
       where: { id: parseInt(id) }
     });
 
-    res.redirect(`/admin/projects/${projectId}/stages/${stageId}/activities`);
+    res.redirect(`/admin/projects/${projectId}/stages/${stageId}/activities?success=Atividade deletada com sucesso!`);
   } catch (error) {
     console.error('Erro ao deletar atividade:', error);
     res.status(500).json({ error: 'Erro ao deletar atividade' });
@@ -550,7 +550,7 @@ const createClient = async (req, res) => {
       }
     });
 
-    res.redirect('/admin/clients');
+    res.redirect('/admin/clients?success=Cliente criado com sucesso!');
   } catch (error) {
     console.error('Erro ao criar cliente:', error);
     const allProjects = await prisma.project.findMany({
@@ -671,7 +671,7 @@ const updateClient = async (req, res) => {
       });
     }
 
-    res.redirect('/admin/clients');
+    res.redirect('/admin/clients?success=Cliente atualizado com sucesso!');
   } catch (error) {
     console.error('Erro ao atualizar cliente:', error);
     const client = await prisma.user.findUnique({
@@ -706,7 +706,7 @@ const deleteClient = async (req, res) => {
       where: { id: parseInt(id) }
     });
 
-    res.redirect('/admin/clients');
+    res.redirect('/admin/clients?success=Cliente deletado com sucesso!');
   } catch (error) {
     console.error('Erro ao deletar cliente:', error);
     res.status(500).json({ error: 'Erro ao deletar cliente' });
@@ -768,7 +768,7 @@ const createAdmin = async (req, res) => {
       }
     });
 
-    res.redirect('/admin/admins');
+    res.redirect('/admin/admins?success=Administrador criado com sucesso!');
   } catch (error) {
     console.error('Erro ao criar administrador:', error);
     res.render('admin/admin-form', {
@@ -846,10 +846,10 @@ const updateAdmin = async (req, res) => {
     // Se o usuário atualizou a si mesmo, fazer logout
     if (isUpdatingSelf) {
       res.clearCookie('token');
-      return res.redirect('/admin/login?message=Seus dados foram atualizados. Por favor, faça login novamente.');
+      return res.redirect('/admin/login?success=Seus dados foram atualizados. Por favor, faça login novamente.');
     }
 
-    res.redirect('/admin/admins');
+    res.redirect('/admin/admins?success=Administrador atualizado com sucesso!');
   } catch (error) {
     console.error('Erro ao atualizar administrador:', error);
     const admin = await prisma.user.findUnique({
@@ -889,7 +889,7 @@ const deleteAdmin = async (req, res) => {
       where: { id: parseInt(id) }
     });
 
-    res.redirect('/admin/admins');
+    res.redirect('/admin/admins?success=Administrador deletado com sucesso!');
   } catch (error) {
     console.error('Erro ao deletar administrador:', error);
     res.status(500).json({ error: 'Erro ao deletar administrador' });
