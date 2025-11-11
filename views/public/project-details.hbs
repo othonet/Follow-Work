@@ -26,63 +26,89 @@
         <div class="space-y-6">
             {{#each project.stages}}
                 <div class="bg-gray-800 rounded-lg p-4 sm:p-6 border border-gray-700">
-                    <div class="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4 mb-4">
-                        <div class="flex-1">
-                            <h3 class="text-xl sm:text-2xl font-semibold mb-2">{{name}}</h3>
-                            {{#if description}}
-                                <p class="text-gray-400 text-sm mb-2">{{description}}</p>
-                            {{/if}}
-                            <p class="text-sm text-gray-500">
-                                Prazo: <span class="font-semibold {{#if (isPast deadline)}}text-red-400{{else}}text-gray-400{{/if}}">
-                                    {{formatDate deadline}}
-                                </span>
-                            </p>
+                    <button 
+                        type="button"
+                        class="stage-toggle w-full text-left hover:bg-gray-700/50 transition-colors cursor-pointer rounded-lg p-2 -m-2"
+                        data-stage-id="stage-{{@index}}"
+                        aria-expanded="false"
+                    >
+                        <div class="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4 mb-4">
+                            <div class="flex-1">
+                                <div class="flex items-center gap-2 mb-2">
+                                    <h3 class="text-xl sm:text-2xl font-semibold">🛠 {{name}}</h3>
+                                    <svg class="stage-arrow w-5 h-5 text-gray-400 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                    </svg>
+                                </div>
+                                {{#if description}}
+                                    <p class="text-gray-400 text-sm mb-2">{{description}}</p>
+                                {{/if}}
+                                <p class="text-sm text-gray-500">
+                                    Prazo: <span class="font-semibold {{#if (isPast deadline)}}text-red-400{{else}}text-gray-400{{/if}}">
+                                        {{formatDate deadline}}
+                                    </span>
+                                </p>
+                                <p class="text-sm text-gray-500 mt-1">
+                                    <span class="font-semibold">{{totalActivities}}</span> 
+                                    {{#if (eq totalActivities 1)}}atividade{{else}}atividades{{/if}}
+                                </p>
+                            </div>
+                            <div class="text-left sm:text-right">
+                                <div class="text-sm text-gray-400 mb-1">Progresso</div>
+                                <div class="text-xl sm:text-2xl font-bold">{{progress}}%</div>
+                            </div>
                         </div>
-                        <div class="text-left sm:text-right">
-                            <div class="text-sm text-gray-400 mb-1">Progresso</div>
-                            <div class="text-xl sm:text-2xl font-bold">{{progress}}%</div>
-                        </div>
-                    </div>
 
-                    <div class="mb-4">
-                        <div class="w-full bg-gray-700 rounded-full h-3">
-                            {{#if (gte progress 100)}}
-                                <div class="bg-green-600 h-3 rounded-full transition-all duration-300" style="width: {{progress}}%"></div>
-                            {{else if (gte progress 50)}}
-                                <div class="bg-blue-600 h-3 rounded-full transition-all duration-300" style="width: {{progress}}%"></div>
-                            {{else}}
-                                <div class="bg-yellow-600 h-3 rounded-full transition-all duration-300" style="width: {{progress}}%"></div>
-                            {{/if}}
+                        <div class="mb-4">
+                            <div class="w-full bg-gray-700 rounded-full h-3">
+                                {{#if (gte progress 100)}}
+                                    <div class="bg-green-600 h-3 rounded-full transition-all duration-300" style="width: {{progress}}%"></div>
+                                {{else if (gte progress 50)}}
+                                    <div class="bg-blue-600 h-3 rounded-full transition-all duration-300" style="width: {{progress}}%"></div>
+                                {{else}}
+                                    <div class="bg-yellow-600 h-3 rounded-full transition-all duration-300" style="width: {{progress}}%"></div>
+                                {{/if}}
+                            </div>
+                            <div class="flex justify-between text-xs text-gray-500 mt-1">
+                                <span>{{completedActivities}} de {{totalActivities}} concluídas</span>
+                            </div>
                         </div>
-                        <div class="flex justify-between text-xs text-gray-500 mt-1">
-                            <span>{{completedActivities}} de {{totalActivities}} concluídas</span>
-                        </div>
-                    </div>
+                    </button>
 
                     {{#if activities}}
-                        <div class="mt-6 space-y-3">
-                            <h4 class="text-lg font-semibold mb-3">Atividades:</h4>
-                            {{#each activities}}
-                                <div class="flex items-start bg-gray-700 rounded-lg p-4 border border-gray-600">
-                                    <div class="flex-shrink-0 mr-3 mt-1">
-                                        <input type="checkbox" 
-                                               {{#if completed}}checked{{/if}} 
-                                               disabled
-                                               class="w-5 h-5 rounded border-gray-600 bg-gray-800 text-blue-600 focus:ring-blue-500 focus:ring-2 cursor-not-allowed">
+                        <div 
+                            id="stage-{{@index}}" 
+                            class="stage-activities hidden overflow-hidden transition-all duration-300"
+                        >
+                            <div class="mt-6 space-y-3">
+                                <h4 class="text-lg font-semibold mb-3">Atividades:</h4>
+                                {{#each activities}}
+                                    <div class="flex items-start bg-gray-700 rounded-lg p-4 border border-gray-600">
+                                        <div class="flex-shrink-0 mr-3 mt-1">
+                                            <input type="checkbox" 
+                                                   {{#if completed}}checked{{/if}} 
+                                                   disabled
+                                                   class="w-5 h-5 rounded border-gray-600 bg-gray-800 text-blue-600 focus:ring-blue-500 focus:ring-2 cursor-not-allowed">
+                                        </div>
+                                        <div class="flex-1">
+                                            <label class="block text-sm font-medium {{#if completed}}line-through text-gray-500{{else}}text-gray-200{{/if}}">
+                                                {{name}}
+                                            </label>
+                                            {{#if description}}
+                                                <p class="text-xs text-gray-500 mt-1">{{description}}</p>
+                                            {{/if}}
+                                        </div>
                                     </div>
-                                    <div class="flex-1">
-                                        <label class="block text-sm font-medium {{#if completed}}line-through text-gray-500{{else}}text-gray-200{{/if}}">
-                                            {{name}}
-                                        </label>
-                                        {{#if description}}
-                                            <p class="text-xs text-gray-500 mt-1">{{description}}</p>
-                                        {{/if}}
-                                    </div>
-                                </div>
-                            {{/each}}
+                                {{/each}}
+                            </div>
                         </div>
                     {{else}}
-                        <p class="text-gray-500 text-sm mt-4">Nenhuma atividade cadastrada nesta etapa.</p>
+                        <div 
+                            id="stage-{{@index}}" 
+                            class="stage-activities hidden overflow-hidden transition-all duration-300"
+                        >
+                            <p class="text-gray-500 text-sm mt-4">Nenhuma atividade cadastrada nesta etapa.</p>
+                        </div>
                     {{/if}}
                 </div>
             {{/each}}
@@ -93,4 +119,32 @@
         </div>
     {{/if}}
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const stageToggles = document.querySelectorAll('.stage-toggle');
+    
+    stageToggles.forEach(toggle => {
+        toggle.addEventListener('click', function() {
+            const stageId = this.getAttribute('data-stage-id');
+            const activitiesContainer = document.getElementById(stageId);
+            const arrow = this.querySelector('.stage-arrow');
+            const isExpanded = this.getAttribute('aria-expanded') === 'true';
+            
+            if (isExpanded) {
+                // Colapsar
+                activitiesContainer.classList.add('hidden');
+                arrow.classList.remove('rotate-180');
+                this.setAttribute('aria-expanded', 'false');
+            } else {
+                // Expandir
+                activitiesContainer.classList.remove('hidden');
+                arrow.classList.add('rotate-180');
+                this.setAttribute('aria-expanded', 'true');
+            }
+        });
+        
+    });
+});
+</script>
 
