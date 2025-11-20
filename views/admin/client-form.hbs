@@ -22,12 +22,24 @@
         </div>
 
         <div class="mb-4">
-            <label for="email" class="block text-sm font-medium mb-2">Email *</label>
+            <label for="username" class="block text-sm font-medium mb-2">Nome de Usuário *</label>
+            <input type="text" 
+                   id="username" 
+                   name="username" 
+                   value="{{client.username}}"
+                   required
+                   placeholder="usuario123"
+                   class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-white">
+            <p class="text-gray-400 text-xs mt-1">Usado para fazer login no sistema</p>
+        </div>
+
+        <div class="mb-4">
+            <label for="email" class="block text-sm font-medium mb-2">Email (opcional)</label>
             <input type="email" 
                    id="email" 
                    name="email" 
                    value="{{client.email}}"
-                   required
+                   placeholder="cliente@exemplo.com"
                    class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-white">
         </div>
 

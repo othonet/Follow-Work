@@ -511,22 +511,51 @@ const createClientPage = async (req, res) => {
 
 const createClient = async (req, res) => {
   try {
-    const { name, email, password, projects } = req.body;
+    const { name, username, email, password, projects } = req.body;
 
-    // Verificar se o email já existe
-    const existingUser = await prisma.user.findUnique({
-      where: { email }
-    });
-
-    if (existingUser) {
+    if (!username || username.trim() === '') {
       const allProjects = await prisma.project.findMany({
         orderBy: { name: 'asc' }
       });
       return res.render('admin/client-form', {
         client: null,
         projects: allProjects,
-        error: 'Email já cadastrado'
+        error: 'Nome de usuário é obrigatório'
       });
+    }
+
+    // Verificar se o username já existe
+    const existingUserByUsername = await prisma.user.findUnique({
+      where: { username }
+    });
+
+    if (existingUserByUsername) {
+      const allProjects = await prisma.project.findMany({
+        orderBy: { name: 'asc' }
+      });
+      return res.render('admin/client-form', {
+        client: null,
+        projects: allProjects,
+        error: 'Nome de usuário já cadastrado'
+      });
+    }
+
+    // Verificar se o email já existe (se fornecido)
+    if (email && email.trim() !== '') {
+      const existingUserByEmail = await prisma.user.findUnique({
+        where: { email }
+      });
+
+      if (existingUserByEmail) {
+        const allProjects = await prisma.project.findMany({
+          orderBy: { name: 'asc' }
+        });
+        return res.render('admin/client-form', {
+          client: null,
+          projects: allProjects,
+          error: 'Email já cadastrado'
+        });
+      }
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -539,7 +568,8 @@ const createClient = async (req, res) => {
     await prisma.user.create({
       data: {
         name,
-        email,
+        username,
+        email: email && email.trim() !== '' ? email : null,
         password: hashedPassword,
         role: 'cliente',
         projects: {
@@ -572,6 +602,7 @@ const editClientPage = async (req, res) => {
       select: {
         id: true,
         name: true,
+        username: true,
         email: true,
         role: true,
         projects: {
@@ -612,20 +643,12 @@ const editClientPage = async (req, res) => {
 const updateClient = async (req, res) => {
   try {
     const { id } = req.params;
-    const { name, email, password, projects } = req.body;
+    const { name, username, email, password, projects } = req.body;
 
-    // Verificar se o email já existe em outro usuário
-    const existingUser = await prisma.user.findFirst({
-      where: {
-        email,
-        NOT: { id: parseInt(id) }
-      }
-    });
-
-    if (existingUser) {
+    if (!username || username.trim() === '') {
       const client = await prisma.user.findUnique({
         where: { id: parseInt(id) },
-        select: { id: true, name: true, email: true }
+        select: { id: true, name: true, username: true, email: true }
       });
       const allProjects = await prisma.project.findMany({
         orderBy: { name: 'asc' }
@@ -633,13 +656,62 @@ const updateClient = async (req, res) => {
       return res.render('admin/client-form', {
         client,
         projects: allProjects,
-        error: 'Email já cadastrado para outro usuário'
+        error: 'Nome de usuário é obrigatório'
       });
+    }
+
+    // Verificar se o username já existe em outro usuário
+    const existingUserByUsername = await prisma.user.findFirst({
+      where: {
+        username,
+        NOT: { id: parseInt(id) }
+      }
+    });
+
+    if (existingUserByUsername) {
+      const client = await prisma.user.findUnique({
+        where: { id: parseInt(id) },
+        select: { id: true, name: true, username: true, email: true }
+      });
+      const allProjects = await prisma.project.findMany({
+        orderBy: { name: 'asc' }
+      });
+      return res.render('admin/client-form', {
+        client,
+        projects: allProjects,
+        error: 'Nome de usuário já cadastrado para outro usuário'
+      });
+    }
+
+    // Verificar se o email já existe em outro usuário (se fornecido)
+    if (email && email.trim() !== '') {
+      const existingUserByEmail = await prisma.user.findFirst({
+        where: {
+          email,
+          NOT: { id: parseInt(id) }
+        }
+      });
+
+      if (existingUserByEmail) {
+        const client = await prisma.user.findUnique({
+          where: { id: parseInt(id) },
+          select: { id: true, name: true, username: true, email: true }
+        });
+        const allProjects = await prisma.project.findMany({
+          orderBy: { name: 'asc' }
+        });
+        return res.render('admin/client-form', {
+          client,
+          projects: allProjects,
+          error: 'Email já cadastrado para outro usuário'
+        });
+      }
     }
 
     const updateData = {
       name,
-      email
+      username,
+      email: email && email.trim() !== '' ? email : null
     };
 
     if (password && password.trim() !== '') {
@@ -676,7 +748,7 @@ const updateClient = async (req, res) => {
     console.error('Erro ao atualizar cliente:', error);
     const client = await prisma.user.findUnique({
       where: { id: parseInt(req.params.id) },
-      select: { id: true, name: true, email: true }
+      select: { id: true, name: true, username: true, email: true }
     });
     const allProjects = await prisma.project.findMany({
       orderBy: { name: 'asc' }

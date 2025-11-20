@@ -8,14 +8,18 @@ const loginPage = (req, res) => {
 
 const login = async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { username, password } = req.body;
+
+    if (!username || !password) {
+      return res.render('public/login', { error: 'Nome de usuário e senha são obrigatórios' });
+    }
 
     const user = await prisma.user.findUnique({
-      where: { email }
+      where: { username }
     });
 
     if (!user) {
-      return res.render('public/login', { error: 'Email ou senha inválidos' });
+      return res.render('public/login', { error: 'Nome de usuário ou senha inválidos' });
     }
 
     if (user.role !== 'cliente') {
@@ -25,11 +29,11 @@ const login = async (req, res) => {
     const isValidPassword = await bcrypt.compare(password, user.password);
 
     if (!isValidPassword) {
-      return res.render('public/login', { error: 'Email ou senha inválidos' });
+      return res.render('public/login', { error: 'Nome de usuário ou senha inválidos' });
     }
 
     const token = jwt.sign(
-      { userId: user.id, email: user.email },
+      { userId: user.id, username: user.username },
       process.env.JWT_SECRET,
       { expiresIn: '7d' }
     );
