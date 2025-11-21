@@ -474,6 +474,7 @@ const getClients = async (req, res) => {
       select: {
         id: true,
         name: true,
+        username: true,
         email: true,
         createdAt: true,
         updatedAt: true,
@@ -536,8 +537,7 @@ const createClient = async (req, res) => {
       return res.render('admin/client-form', {
         client: null,
         projects: allProjects,
-        error: 'Nome de usuário já cadastrado'
-      });
+        error: 'Nome de usuário já cadastrado'      });
     }
 
     // Verificar se o email já existe (se fornecido)
@@ -553,8 +553,7 @@ const createClient = async (req, res) => {
         return res.render('admin/client-form', {
           client: null,
           projects: allProjects,
-          error: 'Email já cadastrado'
-        });
+          error: 'Email já cadastrado'});
       }
     }
 
