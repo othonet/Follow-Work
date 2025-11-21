@@ -24,6 +24,7 @@ const {
   updateActivity,
   deleteActivity,
   toggleActivity,
+  updateActivitiesOrder,
   getClients,
   createClientPage,
   createClient,
@@ -72,6 +73,7 @@ router.get('/projects/:projectId/stages/:stageId/activities/:id/edit', editActiv
 router.post('/projects/:projectId/stages/:stageId/activities/:id', updateActivity);
 router.post('/projects/:projectId/stages/:stageId/activities/:id/delete', deleteActivity);
 router.post('/activities/:id/toggle', toggleActivity);
+router.post('/stages/:stageId/activities/reorder', updateActivitiesOrder);
 
 // Clients Management
 router.get('/clients', getClients);

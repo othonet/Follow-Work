@@ -302,7 +302,7 @@ const getActivities = async (req, res) => {
         project: true,
         activities: {
           orderBy: {
-            createdAt: 'asc'
+            order: 'asc'
           }
         }
       }
@@ -345,10 +345,19 @@ const createActivity = async (req, res) => {
     const { projectId, stageId } = req.params;
     const { name, description } = req.body;
 
+    // Buscar o maior order atual para esta etapa
+    const lastActivity = await prisma.activity.findFirst({
+      where: { stageId: parseInt(stageId) },
+      orderBy: { order: 'desc' }
+    });
+
+    const nextOrder = lastActivity ? lastActivity.order + 1 : 0;
+
     await prisma.activity.create({
       data: {
         name,
         description: description || null,
+        order: nextOrder,
         stageId: parseInt(stageId)
       }
     });
@@ -460,6 +469,44 @@ const toggleActivity = async (req, res) => {
   } catch (error) {
     console.error('Erro ao alternar atividade:', error);
     res.status(500).json({ error: 'Erro ao alternar atividade' });
+  }
+};
+
+const updateActivitiesOrder = async (req, res) => {
+  try {
+    const { stageId } = req.params;
+    const { activityIds } = req.body; // Array de IDs na nova ordem
+
+    if (!Array.isArray(activityIds)) {
+      return res.status(400).json({ error: 'activityIds deve ser um array' });
+    }
+
+    // Verificar se todas as atividades pertencem à etapa
+    const activities = await prisma.activity.findMany({
+      where: {
+        id: { in: activityIds.map(id => parseInt(id)) },
+        stageId: parseInt(stageId)
+      }
+    });
+
+    if (activities.length !== activityIds.length) {
+      return res.status(400).json({ error: 'Algumas atividades não pertencem a esta etapa' });
+    }
+
+    // Atualizar a ordem de cada atividade
+    const updatePromises = activityIds.map((activityId, index) => {
+      return prisma.activity.update({
+        where: { id: parseInt(activityId) },
+        data: { order: index }
+      });
+    });
+
+    await Promise.all(updatePromises);
+
+    res.json({ success: true, message: 'Ordem das atividades atualizada com sucesso' });
+  } catch (error) {
+    console.error('Erro ao atualizar ordem das atividades:', error);
+    res.status(500).json({ error: 'Erro ao atualizar ordem das atividades' });
   }
 };
 
@@ -990,6 +1037,7 @@ module.exports = {
   updateActivity,
   deleteActivity,
   toggleActivity,
+  updateActivitiesOrder,
   getClients,
   createClientPage,
   createClient,

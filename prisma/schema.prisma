@@ -55,6 +55,7 @@ model Activity {
   name        String
   description String?
   completed   Boolean  @default(false)
+  order       Int      @default(0)
   stageId     Int
   stage       Stage    @relation(fields: [stageId], references: [id], onDelete: Cascade)
   createdAt   DateTime @default(now())

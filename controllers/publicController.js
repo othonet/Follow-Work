@@ -110,7 +110,7 @@ const getProjectDetails = async (req, res) => {
           include: {
             activities: {
               orderBy: {
-                createdAt: 'asc'
+                order: 'asc'
               }
             }
           },
