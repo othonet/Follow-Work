@@ -41,8 +41,8 @@
                         {{#each clients}}
                             <tr class="hover:bg-gray-750">
                                 <td class="px-4 lg:px-6 py-4 text-sm font-medium text-white">{{name}}</td>
-                                <td class="px-4 lg:px-6 py-4 text-sm text-gray-300">{{username}}</td>
-                                <td class="px-4 lg:px-6 py-4 text-sm text-gray-300">{{email}}</td>
+                                <td class="px-4 lg:px-6 py-4 text-sm text-gray-300">{{#if username}}{{username}}{{else}}<span class="text-gray-500">-</span>{{/if}}</td>
+                                <td class="px-4 lg:px-6 py-4 text-sm text-gray-300">{{#if email}}{{email}}{{else}}<span class="text-gray-500">-</span>{{/if}}</td>
                                 <td class="px-4 lg:px-6 py-4 text-sm text-gray-300">
                                     {{#if projects}}
                                         <div class="flex flex-wrap gap-1">
@@ -82,8 +82,8 @@
                 <div class="bg-gray-800 rounded-lg p-4 border border-gray-700">
                     <div class="mb-3">
                         <h3 class="text-lg font-semibold text-white mb-1">{{name}}</h3>
-                        <p class="text-sm text-gray-300">Usuário: {{username}}</p>
-                        <p class="text-sm text-gray-300">{{email}}</p>
+                        <p class="text-sm text-gray-300">Usuário: {{#if username}}{{username}}{{else}}<span class="text-gray-500">-</span>{{/if}}</p>
+                        <p class="text-sm text-gray-300">{{#if email}}{{email}}{{else}}<span class="text-gray-500">-</span>{{/if}}</p>
                         <p class="text-xs text-gray-400 mt-1">Cadastrado em {{formatDate createdAt}}</p>
                     </div>
                     {{#if projects}}
